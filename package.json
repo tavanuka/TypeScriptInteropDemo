@@ -1,0 +1,19 @@
+{
+  "name": "typescriptinteropdemo",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "typescriptinteropdemo.rcl",
+    "typescriptinteropdemo.server"
+  ],
+  "scripts": {
+    "build": "npm -ws run build",
+    "clean": "npm -ws run clean"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@microsoft/dotnet-js-interop": "^10.0.0",
+    "esbuild": "^0.25.10"
+  }
+}

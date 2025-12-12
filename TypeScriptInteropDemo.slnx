@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="package.json" />
+    <File Path=".gitignore" />
+    <File Path="Directory.Packages.props" />
+    <File Path="tsconfig.base.json" />
+  </Folder>
+  <Project Path="TypeScriptInteropDemo.Rcl/TypeScriptInteropDemo.Rcl.csproj" />
+  <Project Path="TypeScriptInteropDemo/TypeScriptInteropDemo.Client/TypeScriptInteropDemo.Client.csproj" />
+  <Project Path="TypeScriptInteropDemo/TypeScriptInteropDemo/TypeScriptInteropDemo.csproj" />
+</Solution>

@@ -1,0 +1,57 @@
+﻿@using Microsoft.JSInterop
+@inject IJSRuntime JsRuntime
+@implements IAsyncDisposable
+
+@rendermode InteractiveAuto
+
+<div class="my-component">
+    This component is defined in the <strong>TypeScriptInteropDemo.Rcl</strong> library.
+</div>
+
+<button class="btn btn-primary mb-2" @onclick="ShowPrompt">Show prompt!</button>
+
+@if (!string.IsNullOrWhiteSpace(_content))
+{
+    <div class="alert alert-info">
+        @_content
+    </div>
+}
+
+@code {
+    private IJSObjectReference? _classInstance;
+    
+    private DotNetObjectReference<Component1>? _objRef;
+    private string _content = "";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _objRef = DotNetObjectReference.Create(this);
+            // await using to dispose of the module instance immediately, as we are only interested in the class instance
+            await using var module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/TypeScriptInteropDemo.Rcl/Component1.razor.js");
+            _classInstance = await module.InvokeConstructorAsync("Component1", _objRef);
+        }
+    }
+
+    private async Task ShowPrompt()
+    {
+        if (_classInstance is not null)
+            await _classInstance.InvokeVoidAsync("showPrompt", "Hello world!");
+    }
+
+    [JSInvokable]
+    public void UpdateContent(string content)
+    {
+        _content = content;
+        StateHasChanged();
+    }
+    
+    public async ValueTask DisposeAsync()
+    {
+        if (_classInstance is not null)
+            await _classInstance.DisposeAsync();
+
+        _objRef?.Dispose();
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "typescriptinteropdemo.client", // this name goes to the workspace attribute in package.json
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "license": "ISC"
+}

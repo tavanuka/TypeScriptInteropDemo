@@ -1,0 +1,39 @@
+﻿@page "/"
+@implements  IAsyncDisposable
+@inject IJSRuntime JsRuntime
+
+@* Interop works on server side rendering as well, however it must be done after it has been rendered. *@
+@rendermode InteractiveServer
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="@(async () => await ShowAlert())">Click me for alert!</button>
+
+@code {
+    IJSObjectReference? _module;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // We still have to use the .js file extension, as we are compiling it into JavaScript to be executed by the 
+            // app itself. Blazor has no native TS support.
+            _module = await JsRuntime.InvokeAsync<IJSObjectReference>("import", "./script.js");
+        }
+    }
+
+    async ValueTask ShowAlert()
+    {
+        if(_module is not null)
+            await _module.InvokeVoidAsync("sayHello");
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_module is not null)
+            await _module.DisposeAsync();
+    }
+}
